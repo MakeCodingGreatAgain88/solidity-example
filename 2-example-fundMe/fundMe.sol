@@ -10,17 +10,17 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interf
  * 3，在锁定期内达到筹款目标，生产商可以提款
  * 4，在锁定期内没有达到筹款目标，可以解锁，投资人在锁定期后可以退款
  */
-contract fundMe {
+contract FundMe {
     AggregatorV3Interface internal dataFeed;
 
     // 众筹列表
-    mapping (address => uint256) public addressToAmountFunded;
+    mapping(address => uint256) public addressToAmountFunded;
 
     // 最小入金10usd
-    uint256 constant MINIMUN_VALUE =  10 * 10 ** 18;
+    uint256 constant MINIMUN_VALUE = 10 * 10 ** 18;
 
     // 筹款目标金额1000usd
-    uint256 constant TARGET =  1000 * 10 ** 18;
+    uint256 constant TARGET = 1000 * 10 ** 18;
 
     // 合约部署人
     address owner;
@@ -30,6 +30,12 @@ contract fundMe {
 
     // 锁定时间
     uint256 lockTime;
+
+    // 铸造通证地址
+    address erc20Address;
+
+    // 众筹成功
+    bool public getFundSuccess = false;
 
     constructor(uint256 _lockTime) {
         // sepolia testnet
@@ -75,7 +81,7 @@ contract fundMe {
     }
 
     // 用户退款
-    function refundMyFunds() external windowClose{
+    function refundMyFunds() external windowClose {
         uint256 fundedAmount = addressToAmountFunded[msg.sender];
         // 众筹总金额小于目标金额
         require(conversionEthToUsd(address(this).balance) < TARGET, "Target is reached");
@@ -83,7 +89,7 @@ contract fundMe {
         require(fundedAmount != 0, "No funds to refund");
 
         // 退回投资金额
-        (bool success, ) = payable(msg.sender).call{value: fundedAmount}("");
+        (bool success,) = payable(msg.sender).call{value: fundedAmount}("");
         require(success, "transfer tx failed");
 
         // 清空记录，防止重入攻击或重复提款
@@ -91,17 +97,19 @@ contract fundMe {
     }
 
     // 余额提款
-    function getFund() external onlyOwner windowClose{
+    function getFund() external onlyOwner windowClose {
 
         // 众筹金额必须大于目标金额
         require(conversionEthToUsd(address(this).balance) >= TARGET, "Target is not reached");
 
         // 提款
-        (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
+        (bool success,) = payable(msg.sender).call{value: address(this).balance}("");
         require(success, "transfer tx failed");
 
         // 清空记录，防止重入攻击或重复提款
         addressToAmountFunded[msg.sender] = 0;
+
+        getFundSuccess = true;
     }
 
     // 转移所有权
@@ -112,6 +120,17 @@ contract fundMe {
     // ⚠️ 任何用户提款全部余额 仅测试使用
     function withdraw() external {
         payable(msg.sender).transfer(address(this).balance);
+    }
+
+    // 修改众筹者资助金额（用于铸造合约，铸造通证成功后调用）
+    function setFunderToAmount(address funder, uint256 amountUpdate) external {
+        require(msg.sender == erc20Address, "You don't have permission");
+        addressToAmountFunded[funder] = amountUpdate;
+    }
+
+    // 更新 erc20Address 铸造合约部署后更新为铸造合约地址
+    function setErc20Address(address newErc20Address) external onlyOwner {
+        erc20Address = newErc20Address;
     }
 
     modifier windowClose(){

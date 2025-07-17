@@ -4,7 +4,9 @@
   "description": "example-hardhat",
   "main": "index.js",
   "scripts": {
+    "compile": "npx hardhat compile",
     "deploy": "hardhat run scripts/deployFundMe.ts",
+    "deploy:sepolia": "npx env-enc set-pw && hardhat run scripts/deployFundMe.ts --network sepolia",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

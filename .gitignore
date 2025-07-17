@@ -16,3 +16,7 @@ states/
 
 # idea
 .idea/
+.vscode/
+
+# node_modules
+/**/node_modules/

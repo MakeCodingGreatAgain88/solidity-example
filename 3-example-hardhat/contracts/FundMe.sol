@@ -20,8 +20,8 @@ contract FundMe {
     // 最小入金10usd
     uint256 constant MINIMUN_VALUE = 10 * 10 ** 18;
 
-    // 筹款目标金额1000usd
-    uint256 constant TARGET = 1000 * 10 ** 18;
+    // 筹款目标金额100usd
+    uint256 constant TARGET = 100 * 10 ** 18;
 
     // 合约部署人
     address owner;

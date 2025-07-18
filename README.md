@@ -92,3 +92,20 @@ User        ──> FundMe.fund() ───> 记录捐款
            用户调用 ERC20.mint()
                   ↓
          根据捐款金额铸造代币
+```
+
+## 🎯 3-example-hardhat
+#### 1，使用hardhat脚本进行FundMe合约部署，verify合约，验证FundMe合约部署，逻辑交互
+
+```bash
+npx hardhat run scripts/deployFundMe.ts --network sepolia
+```
+
+#### 2，使用hardhat tasks进行FundMe合约部署，verify合约，验证FundMe合约部署，逻辑交互
+
+```bash
+npx hardhat deploy-fundme --locktime [locktime] --network sepolia
+```
+```bash
+npx hardhat interact-fundme --address [fundme contract address] --network sepolia
+```

@@ -13,7 +13,9 @@ npx hardhat ignition deploy ./ignition/modules/Lock.ts
 ```
 ---
 
-### env-enc 加密环境变量
+## 项目配置
+
+### 1. env-enc 加密环境变量
 #### 🧾 文档地址：[https://www.npmjs.com/package/@chainlink/env-enc](https://www.npmjs.com/package/@chainlink/env-enc)
 
 #### 🎯 RPC接口资源: [https://www.alchemy.com](https://www.alchemy.com)， [https://www.infura.io](https://www.infura.io)， [https://quicknode.com](https://quicknode.com)
@@ -30,3 +32,9 @@ npx env-enc set-pw
 ```shell
 npx env-enc set
 ```
+
+---
+
+### 2. etherscan verify
+#### 🧾 API创建地址：[https://etherscan.io/apidashboard](https://etherscan.io/apidashboard)
+创建成功按照 env-enc 加密环境变量步骤进行变量设置

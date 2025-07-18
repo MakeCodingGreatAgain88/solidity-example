@@ -12,6 +12,7 @@
 ├── 2-example-fundMe/             // ✅ 当前实现的众筹 + ERC20 示例合约
 │   ├── FundMe.sol                // 众筹合约
 │   └── FundTokenERC20.sol       // 通证合约
+├── 3-example-hardhat            // ✅ Hardhat 的示例
 └── README.md                     // 项目说明文档
 
 ```

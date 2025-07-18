@@ -1,5 +1,10 @@
 # 🚀 Solidity Examples | Solidity 示例项目集
 
+### 🎯 本示例是学习B站视频[《Chainlink预言机：7小时最全Web3教程：ERC20，NFT，Hardhat，CCIP跨链》](https://www.bilibili.com/video/BV1RFsfe5Ek5?spm_id_from=333.788.videopod.episodes&vd_source=2898901877132a545a58a989514a76ee)的实践
+**感谢frank老师的教学，非常棒  🫶**
+
+----
+
 这是一个包含多个 **Solidity 合约开发示例** 的项目集合，适合学习和实践智能合约开发。每个示例目录包含对应的 Solidity 合约文件及相关文档说明。
 
 ---
@@ -16,7 +21,7 @@
 └── README.md                     // 项目说明文档
 
 ```
-## 🎯 1-example-helloWorld
+## 🧩 1-example-helloWorld
 基础语法demo
 
 

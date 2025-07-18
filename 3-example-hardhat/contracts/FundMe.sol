@@ -10,6 +10,7 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interf
  * 3，在锁定期内达到筹款目标，生产商可以提款
  * 4，在锁定期内没有达到筹款目标，可以解锁，投资人在锁定期后可以退款
  */
+
 contract FundMe {
     AggregatorV3Interface internal dataFeed;
 
@@ -98,7 +99,6 @@ contract FundMe {
 
     // 余额提款
     function getFund() external onlyOwner windowClose {
-
         // 众筹金额必须大于目标金额
         require(conversionEthToUsd(address(this).balance) >= TARGET, "Target is not reached");
 

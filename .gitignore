@@ -37,3 +37,4 @@ states/
 /**/ignition/deployments/chain-31337
 
 /3-example-hardhat/.env.enc
+/3-example-hardhat/deployments/

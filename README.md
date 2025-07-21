@@ -103,7 +103,7 @@ User        ──> FundMe.fund() ───> 记录捐款
 ```
 
 ## 🧩 3-example-hardhat
-#### 1，使用hardhat脚本进行FundMe合约部署，verify合约，验证FundMe合约部署，逻辑交互
+#### 1，通过部署脚本使用hardhat进行FundMe合约部署，verify合约，验证FundMe合约部署，逻辑交互
 
 ```bash
 npx hardhat run scripts/deployFundMe.ts --network sepolia
@@ -116,4 +116,10 @@ npx hardhat deploy-fundme --locktime [locktime] --network sepolia
 ```
 ```bash
 npx hardhat interact-fundme --address [fundme contract address] --network sepolia
+```
+
+#### 3，hardhat-deploy + mocha + chai 单元测试
+
+```bash
+npx hardhat test
 ```

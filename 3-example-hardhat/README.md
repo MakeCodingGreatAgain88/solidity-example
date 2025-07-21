@@ -42,3 +42,25 @@ npx hardhat compile
 ### 2. etherscan verify
 #### 🧾 API创建地址：[https://etherscan.io/apidashboard](https://etherscan.io/apidashboard)
 创建成功按照 env-enc 加密环境变量步骤进行变量设置
+
+
+### 通过部署脚本使用hardhat进行FundMe合约部署，verify合约，验证FundMe合约部署，逻辑交互
+
+```bash
+npx hardhat run scripts/deployFundMe.ts --network sepolia
+```
+
+### 使用hardhat tasks进行FundMe合约部署，verify合约，验证FundMe合约部署，逻辑交互
+
+```bash
+npx hardhat deploy-fundme --locktime [locktime] --network sepolia
+```
+```bash
+npx hardhat interact-fundme --address [fundme contract address] --network sepolia
+```
+
+### hardhat-deploy + mocha + chai 单元测试
+
+```bash
+npx hardhat test
+```

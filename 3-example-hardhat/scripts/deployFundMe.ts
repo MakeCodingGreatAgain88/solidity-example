@@ -1,13 +1,13 @@
 import { ethers } from "hardhat"
+import { LOCK_TIME } from "../config/helper-hardhat-config"
 
 async function main() {
     // crate factory
     const fundMeFactory = await ethers.getContractFactory("FundMe")
     console.log("contract deploying...")
 
-    const _lockTime = 600
     // deploy contract from factory
-    const fundMe = await fundMeFactory.deploy(_lockTime)
+    const fundMe = await fundMeFactory.deploy(LOCK_TIME)
     await fundMe.waitForDeployment()
     console.log(`contract has been deployed successfully, contract address is: ${ fundMe.target }`)
 
@@ -21,7 +21,7 @@ async function main() {
         await fundMe.deploymentTransaction().wait(5)
 
         // ✅ 验证
-        await verifyFundMe(fundMe.target, [ _lockTime ])
+        await verifyFundMe(fundMe.target, [ LOCK_TIME, "0x694AA1769357215DE4FAC081bf1f309aDC325306" ])
     }
     else {
         console.log("⚠️ Not on sepolia, skipping ")

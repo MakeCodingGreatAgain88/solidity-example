@@ -1,12 +1,13 @@
 import { task } from "hardhat/config"
+import { NETWORK_CONFIG } from "../config/helper-hardhat-config"
 
-task("deploy-fundme",  "🔧 Deploys the FundMe contract. Usage: npx hardhat deploy-fundme --locktime 60 --network sepolia").addParam("locktime", "The lock time").setAction(async (taskArgs, hre) => {
+task("deploy-fundme", "🔧 Deploys the FundMe contract. Usage: npx hardhat deploy-fundme --locktime 60 --network sepolia").addParam("locktime", "The lock time").setAction(async (taskArgs, hre) => {
     // crate factory
     const fundMeFactory = await ethers.getContractFactory("FundMe")
     console.log("contract deploying...")
 
     // deploy contract from factory
-    const fundMe = await fundMeFactory.deploy(taskArgs.locktime)
+    const fundMe = await fundMeFactory.deploy(taskArgs.locktime, NETWORK_CONFIG[11155111].ethUsdPriceFeed)
     await fundMe.waitForDeployment()
     console.log(`contract has been deployed successfully, contract address is: ${ fundMe.target }`)
 
@@ -20,7 +21,7 @@ task("deploy-fundme",  "🔧 Deploys the FundMe contract. Usage: npx hardhat dep
         await fundMe.deploymentTransaction().wait(5)
 
         // ✅ 验证
-        await verifyFundMe(fundMe.target, [ taskArgs.locktime ], hre)
+        await verifyFundMe(fundMe.target, [ taskArgs.locktime, NETWORK_CONFIG[11155111].ethUsdPriceFeed ], hre)
     }
     else {
         console.log("⚠️ Not on sepolia, skipping ")

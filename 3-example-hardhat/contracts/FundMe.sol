@@ -38,6 +38,9 @@ contract FundMe {
     // 众筹成功
     bool public getFundSuccess = false;
 
+    // emit event
+    event fundWithdrawalByOwner(uint256 balance, address to);
+
     constructor(uint256 _lockTime, address _dataFeedAddress) {
         // sepolia testnet
         dataFeed = AggregatorV3Interface(_dataFeedAddress);
@@ -103,13 +106,17 @@ contract FundMe {
         require(conversionEthToUsd(address(this).balance) >= TARGET, "Target is not reached");
 
         // 提款
-        (bool success,) = payable(msg.sender).call{value: address(this).balance}("");
+        bool success;
+        uint256 balance = address(this).balance;
+        (success,) = payable(msg.sender).call{value: balance}("");
         require(success, "transfer tx failed");
 
         // 清空记录，防止重入攻击或重复提款
         addressToAmountFunded[msg.sender] = 0;
 
         getFundSuccess = true;
+
+        emit fundWithdrawalByOwner(balance, msg.sender);
     }
 
     // 转移所有权
@@ -118,7 +125,7 @@ contract FundMe {
     }
 
     // ⚠️ 任何用户提款全部余额 仅测试使用
-    function withdraw() external onlyOwner{
+    function withdraw() external onlyOwner {
         payable(msg.sender).transfer(address(this).balance);
     }
 

@@ -110,17 +110,8 @@ describe("FundMe", async function () {
         await fundMe.fund({value: ethAmount}) // 充值
         await time.increase(LOCK_TIME + 1) // 超过锁定期
         await mine()
-        const initialBalance = await ethers.provider.getBalance(firstAccount)
-        const tx = await fundMe.getFund()
-        const receipt = await tx.wait()
-        const gasPrice = receipt.effectiveGasPrice ?? tx.gasPrice ?? ethers.parseUnits("1", "gwei") // 兜底处理
-        const gasUsed = receipt.gasUsed
-        // @ts-ignore
-        const gasCost: bigint = gasUsed * gasPrice
-        const finalBalance = await ethers.provider.getBalance(firstAccount)
-        const getFundSuccess = await fundMe.getFundSuccess()
-        assert.equal(getFundSuccess, true, "getFundSuccess should be true")
-        assert(finalBalance >= initialBalance + ethAmount - gasCost, "Balance should increase by contract balance")
+        // 比对提取余额和提取地址是否一致
+        await expect(fundMe.getFund()).to.emit(fundMe, "fundWithdrawalByOwner").withArgs(ethAmount, firstAccount)
     })
 
     it("测试锁定期后余额不足owner不可提款", async function () {

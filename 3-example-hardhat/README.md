@@ -32,6 +32,10 @@ npx env-enc set-pw
 ```shell
 npx env-enc set
 ```
+**step3. 编译合约**
+```shell
+npx hardhat compile
+```
 
 ---
 

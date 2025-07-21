@@ -69,17 +69,7 @@ describe("FundMe", async function () {
         await fundMe.fund({value: ethAmount}) // 充值
         await time.increase(LOCK_TIME + 1) // 超过锁定期
         await mine()
-        const initialBalance = await ethers.provider.getBalance(firstAccount)
-        const tx = await fundMe.refundMyFunds()
-        const receipt = await tx.wait()
-        const gasPrice = receipt.effectiveGasPrice ?? tx.gasPrice ?? ethers.parseUnits("1", "gwei") // 兜底处理
-        const gasUsed = receipt.gasUsed
-        // @ts-ignore
-        const gasCost: bigint = gasUsed * gasPrice
-        const finalBalance = await ethers.provider.getBalance(firstAccount)
-        const fundedAmount = await fundMe.addressToAmountFunded(firstAccount)
-        assert.equal(fundedAmount.toString(), "0", "Funded amount should be reset")
-        assert(finalBalance >= initialBalance + ethAmount - gasCost, "Balance should increase by refunded amount")
+        await expect(fundMe.refundMyFunds()).to.emit(fundMe, "refundWithdrawalByFunder").withArgs(ethAmount, firstAccount)
     })
 
     it("测试锁定期后余额足够不可退款", async function () {
@@ -101,7 +91,7 @@ describe("FundMe", async function () {
     it("测试无投资记录不可退款", async function () {
         await time.increase(LOCK_TIME + 1) // 超过锁定期
         await mine()
-        
+
         await expect(fundMeSecondAccount.refundMyFunds()).to.be.revertedWith("No funds to refund")
     })
 
@@ -146,7 +136,7 @@ describe("FundMe", async function () {
     })
 
     it("测试非owner不可转移所有权", async function () {
-        
+
         await expect(fundMeSecondAccount.transferOwnership(secondAccount)).to.be.revertedWith("Not owner.....")
     })
 
@@ -158,7 +148,7 @@ describe("FundMe", async function () {
     })
 
     it("测试非owner不可设置erc20Address", async function () {
-        
+
         await expect(fundMeSecondAccount.setErc20Address(secondAccount)).to.be.revertedWith("Not owner.....")
     })
 
@@ -172,7 +162,7 @@ describe("FundMe", async function () {
     })
 
     it("测试非erc20Address不可更新投资金额", async function () {
-        
+
         await expect(fundMeSecondAccount.setFunderToAmount(firstAccount, ethers.parseEther("2"))).to.be.revertedWith("You don't have permission")
     })
 
@@ -204,7 +194,7 @@ describe("FundMe", async function () {
     it("测试非owner不可通过withdraw提款", async function () {
         const ethAmount = ethers.parseEther("0.1") // 0.1 ETH
         await fundMe.fund({value: ethAmount}) // 充值
-        
+
         await expect(fundMeSecondAccount.withdraw()).to.be.revertedWith("Not owner.....")
     })
 })

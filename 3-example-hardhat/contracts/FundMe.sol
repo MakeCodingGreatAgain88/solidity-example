@@ -38,8 +38,11 @@ contract FundMe {
     // 众筹成功
     bool public getFundSuccess = false;
 
-    // emit event
+    // 提款成功
     event fundWithdrawalByOwner(uint256 balance, address to);
+
+    // 退款成功
+    event refundWithdrawalByFunder(uint256 balance, address to);
 
     constructor(uint256 _lockTime, address _dataFeedAddress) {
         // sepolia testnet
@@ -98,6 +101,8 @@ contract FundMe {
 
         // 清空记录，防止重入攻击或重复提款
         addressToAmountFunded[msg.sender] = 0;
+
+        emit refundWithdrawalByFunder(fundedAmount, msg.sender);
     }
 
     // 余额提款

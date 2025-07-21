@@ -131,7 +131,9 @@ contract FundMe {
 
     // ⚠️ 任何用户提款全部余额 仅测试使用
     function withdraw() external onlyOwner {
-        payable(msg.sender).transfer(address(this).balance);
+        uint256 balance = address(this).balance;
+        payable(msg.sender).transfer(balance);
+        emit fundWithdrawalByOwner(balance, msg.sender);
     }
 
     // 修改众筹者资助金额（用于铸造合约，铸造通证成功后调用）

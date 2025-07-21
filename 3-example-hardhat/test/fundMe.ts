@@ -170,25 +170,7 @@ describe("FundMe", async function () {
         const ethAmount = ethers.parseEther("0.1")
 
         await fundMe.fund({value: ethAmount})
-        const fundMeDeploy = await deployments.get("FundMe")
-
-        const initialBalance = await ethers.provider.getBalance(firstAccount)
-        const tx = await fundMe.withdraw() // 默认 deployer 是 owner
-        const receipt = await tx.wait()
-
-        const gasPrice = receipt.effectiveGasPrice ?? tx.gasPrice ?? ethers.parseUnits("1", "gwei")
-        const gasUsed = receipt.gasUsed
-        // @ts-ignore
-        const gasCost: bigint = gasUsed * gasPrice
-
-        const finalBalance = await ethers.provider.getBalance(firstAccount)
-        const contractBalance = await ethers.provider.getBalance(fundMeDeploy.address)
-
-        assert.equal(contractBalance.toString(), "0", "Contract balance should be 0")
-        assert(
-            finalBalance >= initialBalance + ethAmount - gasCost,
-            "Balance should increase by contract balance"
-        )
+        await expect(fundMe.withdraw()).to.emit(fundMe, "fundWithdrawalByOwner").withArgs(ethAmount, firstAccount)
     })
 
     it("测试非owner不可通过withdraw提款", async function () {

@@ -24,7 +24,7 @@ contract FundMe {
     uint256 constant TARGET = 100 * 10 ** 18;
 
     // 合约部署人
-    address owner;
+    address public owner;
 
     // 部署时间 锁定期开始时间
     uint256 deployTimestamp;

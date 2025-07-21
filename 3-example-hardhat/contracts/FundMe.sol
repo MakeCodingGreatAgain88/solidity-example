@@ -12,7 +12,7 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interf
  */
 
 contract FundMe {
-    AggregatorV3Interface internal dataFeed;
+    AggregatorV3Interface public dataFeed;
 
     // 众筹列表
     mapping(address => uint256) public addressToAmountFunded;

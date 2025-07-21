@@ -1,7 +1,9 @@
 import { HardhatUserConfig } from "hardhat/config"
 import 'hardhat-deploy'
+import 'hardhat-deploy-ethers';
 import "@nomicfoundation/hardhat-toolbox"
 import "@nomicfoundation/hardhat-verify";
+import '@nomicfoundation/hardhat-ethers';
 
 // import * as dotenv from "dotenv"
 import * as dotenv from "@chainlink/env-enc"
@@ -23,7 +25,7 @@ const ETHERSCAN_KEY = process.env.ETHERSCAN_KEY
 
 const config: HardhatUserConfig = {
     solidity: "0.8.30",
-    // defaultNetwork: "hardhat",
+    defaultNetwork: "hardhat",
     networks: {
         sepolia: {
             url: SEPOLIA_RPC_URL_QUICKNODE,

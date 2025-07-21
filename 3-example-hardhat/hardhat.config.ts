@@ -1,4 +1,5 @@
 import { HardhatUserConfig } from "hardhat/config"
+import 'hardhat-deploy'
 import "@nomicfoundation/hardhat-toolbox"
 import "@nomicfoundation/hardhat-verify";
 
@@ -32,7 +33,7 @@ const config: HardhatUserConfig = {
     },
     etherscan: {
         apiKey: ETHERSCAN_KEY
-    },
+    }
 }
 
 export default config

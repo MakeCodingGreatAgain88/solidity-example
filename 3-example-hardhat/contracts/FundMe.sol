@@ -18,7 +18,7 @@ contract FundMe {
     mapping(address => uint256) public addressToAmountFunded;
 
     // 最小入金10usd
-    uint256 constant MINIMUN_VALUE = 10 * 10 ** 18;
+    uint256 public constant MINIMUN_VALUE = 10 * 10 ** 18;
 
     // 筹款目标金额100usd
     uint256 constant TARGET = 100 * 10 ** 18;
@@ -27,20 +27,20 @@ contract FundMe {
     address public owner;
 
     // 部署时间 锁定期开始时间
-    uint256 deployTimestamp;
+    uint256 public deployTimestamp;
 
     // 锁定时间
-    uint256 lockTime;
+    uint256 public lockTime;
 
     // 铸造通证地址
-    address erc20Address;
+    address public erc20Address;
 
     // 众筹成功
     bool public getFundSuccess = false;
 
-    constructor(uint256 _lockTime) {
+    constructor(uint256 _lockTime, address _dataFeedAddress) {
         // sepolia testnet
-        dataFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
+        dataFeed = AggregatorV3Interface(_dataFeedAddress);
         // 合约部署人
         owner = msg.sender;
         // 记录锁定期开始时间
@@ -118,7 +118,7 @@ contract FundMe {
     }
 
     // ⚠️ 任何用户提款全部余额 仅测试使用
-    function withdraw() external {
+    function withdraw() external onlyOwner{
         payable(msg.sender).transfer(address(this).balance);
     }
 
@@ -142,7 +142,7 @@ contract FundMe {
 
     modifier onlyOwner(){
         // 必须是众筹合约发起人
-        require(msg.sender == owner, "Not owner");
+        require(msg.sender == owner, "Not owner.....");
         _;
     }
 }

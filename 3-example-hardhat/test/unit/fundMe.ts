@@ -1,7 +1,7 @@
 import { ethers, deployments, getNamedAccounts } from "hardhat"
 import { time, mine, reset } from "@nomicfoundation/hardhat-network-helpers"
 import { assert, expect } from "chai"
-import { LOCK_TIME, INITIAL_ANSWER } from "../config/helper-hardhat-config"
+import { LOCK_TIME, INITIAL_ANSWER } from "../../config/helper-hardhat-config"
 
 describe("FundMe", async function () {
     let fundMe: any
